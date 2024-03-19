@@ -1,13 +1,4 @@
 HADOOP_VERSION=3.3.6
-SPARK_VERSION=3.4.2
-HIVE_VERSION=3.1.3
-
-HADOOP_URL=https://www.apache.org/dist/hadoop/common/hadoop-$(HADOOP_VERSION)/hadoop-$(HADOOP_VERSION).tar.gz
-SPARK_URL=https://archive.apache.org/dist/spark/spark-$(SPARK_VERSION)/spark-$(SPARK_VERSION)-bin-hadoop3.tgz
-HIVE_URL=https://archive.apache.org/dist/hive/hive-$(HIVE_VERSION)/apache-hive-$(HIVE_VERSION)-bin.tar.gz
-
-DOWNLOAD_PATH=.
-
 build-base: ## build base image.
 	docker build -t hadoop-hive-spark-base ./base
 build-master: ## build master server image.
