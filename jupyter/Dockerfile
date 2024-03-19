@@ -1,15 +1,16 @@
 FROM hadoop-hive-spark-base AS base
-FROM tensorflow/tensorflow:latest-gpu-jupyter
+#FROM tensorflow/tensorflow:latest-gpu-jupyter
+FROM tensorflow/tensorflow:nightly-jupyter
 
-RUN sed -i -e "s|http://archive.ubuntu.com|http://jp.archive.ubuntu.com|g" /etc/apt/sources.list \
- && apt-get -qq update  \
- && DEBIAN_FRONTEND=noninteractive apt-get -qq install --no-install-recommends \
-      sudo \
-      openjdk-8-jdk \
-      curl \
-      coreutils \
-      libc6-dev \
- && rm -rf /var/lib/apt/lists/*
+#RUN sed -i -e "s|http://archive.ubuntu.com|http://jp.archive.ubuntu.com|g" /etc/apt/sources.list \
+RUN apt-get -qq update  \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qq install --no-install-recommends \
+    sudo \
+    openjdk-8-jdk \
+    curl \
+    coreutils \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG USERNAME=jupyter
 ARG GROUPNAME=jupyter
@@ -17,9 +18,9 @@ ARG UID=1001
 ARG GID=1001
 
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
- && chmod 0440 /etc/sudoers.d/$USERNAME \
- && groupadd -g $GID $GROUPNAME \
- && useradd -m -s /bin/bash -u $UID -g $GID $USERNAME
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
+    && groupadd -g $GID $GROUPNAME \
+    && useradd -m -s /bin/bash -u $UID -g $GID $USERNAME
 
 USER $USERNAME
 
@@ -55,6 +56,7 @@ RUN sudo pip install -U pip &&\
 
 WORKDIR /home/$USERNAME
 
+COPY notebook /notebook
 COPY run.sh /usr/local/sbin/run.sh
 RUN sudo chmod a+x /usr/local/sbin/run.sh
 CMD ["run.sh"]
