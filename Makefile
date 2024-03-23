@@ -1,4 +1,3 @@
-HADOOP_VERSION=3.3.6
 build-base: ## build base image.
 	docker build -t hadoop-hive-spark-base ./base
 build-master: ## build master server image.
